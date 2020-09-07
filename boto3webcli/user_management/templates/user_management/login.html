@@ -5,32 +5,57 @@
 	<div class="card shadow-lg border-0 rounded-lg mt-5">
 		<div class="card-header justify-content-center">
      		<h2 class="text-center display-4">Boto3 Web Cli</h2>
-        	<h3 class="font-weight-light my-3">Login</h3>
+        	<h3 class="font-weight-light my-2">Login</h3>
     	</div>
     	<div class="card-body">
     	<!-- Login form-->
-    		<form>
+    		<form method="POST" action="">
+    			{{form.hidden_tag()}}
+    			
     			<!-- Form Group (email)-->
         		<div class="form-group">
-            		<label class="small mb-1" for="inputEmailAddress">Email</label>
-                	<input class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" />
+        			{% if form.email.errors %}
+            			<label class="small mb-1" for="inputEmailAddress">Email</label>
+            			{{form.email(class="form-control py-4 is-invalid",placeholder="Enter email address")}}
+                		<div class="invalid-feedback">
+                			{% for error in form.email.errors %}
+                				<span>{{ error }}</span>
+                			{% endfor %}
+                		</div>
+                	{% else %}
+                		<label class="small mb-1" for="inputEmailAddress">Email</label>
+                		{{form.email(class="form-control py-4",placeholder="Enter email address")}}
+                    {% endif %}
             	</div>
+            	
             	<!-- Form Group (password)-->
             	<div class="form-group">
-                	<label class="small mb-1" for="inputPassword">Password</label>
-                	<input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" />
+            		{% if form.password.errors %}
+                		<label class="small mb-1" for="inputPassword">Password</label>
+                		{{form.password(class="form-control py-4 is-invalid",placeholder="Enter password")}}
+                		<div class="invalid-feedback">
+                			{% for error in form.password.errors %}
+                				<span>{{ error }}</span>
+                			{% endfor %}
+                		</div>
+                	{% else %}
+                		<label class="small mb-1" for="inputPassword">Password</label>
+                		{{form.password(class="form-control py-4",placeholder="Enter password")}}
+                	{% endif %}
             	</div>
+            	
             	<!-- Form Group (remember password checkbox)-->
             	<div class="form-group">
             		<div class="custom-control custom-checkbox">
-                    	<input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
-                    	<label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
+            			{{form.remember(class="custom-control-input")}}
+                        <label class="custom-control-label" for="rememberPasswordCheck">Remember Me</label>
                 	</div>
             	</div>
+            	
             	<!-- Form Group (login box)-->
             	<div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
                 	<a class="small" href="{{url_for('user_management.forgot_password')}}">Forgot Password?</a>
-                	<a class="btn btn-primary" href="index.html">Login</a>
+                	{{form.submit(class="btn btn-primary")}}
             	</div>
         	</form>
     	</div>

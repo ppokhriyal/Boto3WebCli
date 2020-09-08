@@ -3,15 +3,19 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from itsdangerous import URLSafeTimedSerializer
 from flask_login import LoginManager
+from flask_mail import Mail,Message
 
 #App Config
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '878436c0a462c4145fa59eec2c43a66a'
+app.config.from_pyfile('mailconfig.cfg')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config ['SQLALCHEMY_BINDS'] = {'users':'sqlite:///users.db'}
 
+safe_seralizer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+mail = Mail(app)
 
 #Login Manager
 login_manager = LoginManager(app)

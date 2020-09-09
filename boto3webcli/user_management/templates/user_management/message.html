@@ -3,8 +3,6 @@
 <div class="col-lg-7">
 	{% if msg == 'mail_sent' %}
 		<div class="alert alert-primary alert-icon" role="alert">
-			<button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&#xD7;</span>
-			</button>
 			<div class="alert-icon-aside"><i class="far fa-flag"></i></div>
 			<div class="alert-icon-content">
 				<h6 class="alert-heading">Thank You!</h6>
@@ -19,7 +17,6 @@
 		</div>
 	{% elif msg == 'mail_expired' %}
 		<div class="alert alert-secondary alert-icon mb-0" role="alert">
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&#xD7;</span></button>
             <div class="alert-icon-aside"><i class="fas fa-exclamation"></i><i data-feather="feather"></i></div>
                 <div class="alert-icon-content">
                     <h6 class="alert-heading">Link Expired!</h6>
@@ -33,7 +30,6 @@
         </div>
 	{% elif msg == 'mail_linkerror' %}
 		<div class="alert alert-secondary alert-icon mb-0" role="alert">
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&#xD7;</span></button>
             <div class="alert-icon-aside"><i class="fas fa-exclamation"></i><i data-feather="feather"></i></div>
                 <div class="alert-icon-content">
                     <h6 class="alert-heading">Invalid Link!</h6>
@@ -44,6 +40,20 @@
                 </a>
                 </div>
             </div>
-        </div>	
+        </div>
+    {% elif msg == 'password_reset_mail_sent' %}
+    	<div class="alert alert-primary alert-icon" role="alert">
+			<div class="alert-icon-aside"><i class="far fa-flag"></i></div>
+			<div class="alert-icon-content">
+				<h6 class="alert-heading">Thank You!</h6>
+				A Password Reset link has been sent to your email account.
+				<hr>
+				Please click on the link that has just been sent to your email account to varify your email and continue the password reset process.
+				<a class="btn btn-secondary btn-sm" href="{{url_for('user_management.login')}}" target="_blank">
+                    <i class="mr-1" data-feather="external-link"></i>
+                        Go Back to Login
+                </a>
+			</div>
+		</div>
 	{% endif %}                              
 {% endblock content %}

@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,url_for, flash, redirect, request, abort, session
 from boto3webcli import app,db,bcrypt,login_manager,mail,safe_seralizer
-from boto3webcli.user_management.forms import LoginForm,RegisterForm,ForgotPasswordForm
+from boto3webcli.user_management.forms import LoginForm,RegisterForm,ForgotPasswordForm,ResetPassword
 from flask_login import login_user, current_user, logout_user, login_required
 from boto3webcli.models import User
 from flask_mail import Message
@@ -11,9 +11,19 @@ blue = Blueprint('user_management',__name__,template_folder='templates')
 
 
 #Login
-@blue.route('/')
+@blue.route('/',methods=['GET','POST'])
 def login():
 	form = LoginForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+		#Check if email,password and confirm email is True
+		if user and bcrypt.check_password_hash(user.password,form.password.data) and user.confirm_email == True:
+			#If user has checked remember me
+			login_user(user,remember=form.remember.data)
+			next_page = request.args.get('next')
+			return redirect(next_page) if next_page else redirect(url_for('home.home'))
+		else:
+			flash('Login Unsuccessful. Please check email or password or your email id is not yet confirmed.','danger')	
 	return render_template('user_management/login.html',title="Login",form=form)
 
 
@@ -70,8 +80,44 @@ def message(msg):
 
 
 #Forgot Password
-@blue.route('/forgot_password')
+@blue.route('/forgot_password',methods=['POST','GET'])
 def forgot_password():
 	form = ForgotPasswordForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+		#Generate Password reset link mail
+		email = form.email.data
+		token = safe_seralizer.dumps(email,salt='email-confirm')
+		msg = Message('Boto3 Web Cli : Password Reset',sender='ppokhriyal4@gmail.com',recipients=[email])
+		link = url_for('user_management.password_reset_email',token=token,user_id=user.id,_external=True)
+		msg.body= 'Please navigate to below link, for your password reset \n\n {}'.format(link)
+		mail.send(msg)
+		
+		return redirect(url_for('user_management.message',msg='password_reset_mail_sent'))
+
 	return render_template('user_management/forgot_password.html',title="Forgot Password",form=form)	
 
+#Password Reset Mail
+@blue.route('/password_reset_email/<token>/<int:user_id>')
+def password_reset_email(token,user_id):
+	try:
+		email = safe_seralizer.loads(token,salt='email-confirm',max_age=3600)
+	except SignatureExpired:
+		return redirect(url_for('user_management.message',msg='mail_expired'))
+	except BadTimeSignature:
+		return redirect(url_for('user_management.message',msg='mail_linkerror'))
+
+	form = ResetPassword()
+	return render_template('user_management/reset_password.html',title="Reset Password",form=form,userid=user_id)
+
+#Reset Password
+@blue.route('/reset_password/<int:userid>',methods=['POST','GET'])
+def reset_password(userid):
+	form = ResetPassword()
+	user = User.query.get_or_404(userid)
+	if request.method == 'POST':
+		hashed_password = bcrypt.generate_password_hash(form.new_password.data).decode('utf-8')
+		user.password = hashed_password
+		db.session.commit()
+		flash("Your new password has ben set successfully",'success')
+		return redirect(url_for('user_management.login'))

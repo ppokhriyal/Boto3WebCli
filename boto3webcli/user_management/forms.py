@@ -38,3 +38,16 @@ class RegisterForm(FlaskForm):
 class ForgotPasswordForm(FlaskForm):
 	email = StringField('Email',validators=[DataRequired(),Email()])
 	submit = SubmitField('Reset Password')
+
+	def validate_email(self,email):
+		user = 	User.query.filter_by(email=email.data).first()
+		if not user:
+			raise ValidationError('This email is not registered. Please choose the valid email id')
+
+#Reset Password
+class ResetPassword(FlaskForm):
+	new_password = PasswordField('New Password',validators=[DataRequired()])
+	confirm_new_password = PasswordField('Confirm New Password',validators=[DataRequired(),EqualTo('password',message='Confirm Password must be matching Password')])
+	submit = SubmitField('Password Reset')
+
+

@@ -41,7 +41,10 @@
         <hr class="sidebar-divider">
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-          <a class="nav-link" href="charts.html"><i class="fas fa-key"></i><span>Access Keys</span></a>
+          <a class="nav-link" href="{{url_for('awsaccesskey.awsaccesskey_home')}}"><i class="fas fa-key"></i><span> Access Keys</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="charts.html"><i class="fas fa-project-diagram"></i><span> Project Builds</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -239,7 +242,11 @@
   <!-- Custom scripts for all pages-->
   <script src="{{url_for('static',filename='js/sb-admin-2.min.js')}}"></script>
 
-
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+  <script src="{{url_for('static',filename='js/custom.js')}}"></script>
 </body>
 
 </html>

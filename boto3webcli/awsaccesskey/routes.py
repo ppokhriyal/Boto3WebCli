@@ -14,14 +14,21 @@ blue = Blueprint('awsaccesskey',__name__,template_folder='templates')
 @blue.route('/awsaccesskey')
 @fresh_login_required
 def awsaccesskey_home():
+	page = request.args.get('page',1,type=int)
 	accesskeydb_len = len(AccessKey.query.filter_by(user_id=current_user.id).all())
-	return render_template('awsaccesskey/awsaccesskey_home.html',title="Access Key",accesskeydb_len=accesskeydb_len)
+	accesskey_record = AccessKey.query.filter_by(aws_access_key=current_user).paginate(page=page,per_page=10)
+	return render_template('awsaccesskey/awsaccesskey_home.html',title="Access Key",accesskeydb_len=accesskeydb_len,accesskey_record=accesskey_record)
 
 #Access Key Add
-@blue.route('/awsaccesskey/add')
+@blue.route('/awsaccesskey/add',methods=['GET','POST'])
 @fresh_login_required
 def awsaccesskey_add():
 	form = AccessKeyForm()
+	if form.validate_on_submit():
+		accesskey_db = AccessKey(keyname=form.keyname.data,accesskeyid=form.access_keyid.data,secretkeyid=form.secret_keyid.data,aws_access_key=current_user)
+		db.session.add(accesskey_db)
+		db.session.commit()
+		return redirect(url_for('awsaccesskey.awsaccesskey_home'))
 	return render_template('awsaccesskey/awsaccesskey_add.html',title="Add Access Key",form=form)
 
 #Verify Acess Key Id
@@ -35,5 +42,16 @@ def verify_key(accesskey,secretkey):
 	except botocore.exceptions.ClientError:
 		return jsonify({'result':'fail'})
 
+#Remove AWS Access Key
+@blue.route('/awsaccesskey/remove/<int:accessid>',methods=['POST','GET'])
+@fresh_login_required
+def awsaccesskey_remove(accessid):
+	access_id = AccessKey.query.get_or_404(accessid)
+	if access_id.aws_access_key != current_user:
+		abort(403)
+
+	db.session.delete(access_id)
+	db.session.commit()
+	return redirect(url_for('awsaccesskey.awsaccesskey_home'))
 
 

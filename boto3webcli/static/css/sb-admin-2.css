@@ -4503,6 +4503,12 @@ input[type="button"].btn-block {
   border-radius: 0.35rem;
 }
 
+.card-waves .card-body {
+  background-image: url("/static/images/wave.svg");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
 
 .card > hr {
   margin-right: 0;
@@ -7939,7 +7945,9 @@ button.bg-dark:focus {
 .my-n1 {
   margin-top: -0.25rem !important;
 }
-
+.mt-n10{
+  margin-top: -6rem !important;
+}
 .mr-n1,
 .mx-n1 {
   margin-right: -0.25rem !important;
@@ -9456,6 +9464,35 @@ button.bg-dark:focus {
   }
 }
 
+.lift {
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(31, 45, 65, 0.15);
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.lift:hover {
+  transform: translateY(-0.3333333333rem);
+  box-shadow: 0 0.5rem 2rem 0 rgba(31, 45, 65, 0.25);
+}
+.lift:active {
+  transform: none;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(31, 45, 65, 0.15);
+}
+
+.lift-sm {
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(31, 45, 65, 0.2);
+}
+.lift-sm:hover {
+  transform: translateY(-0.1666666667rem);
+  box-shadow: 0 0.25rem 1rem 0 rgba(31, 45, 65, 0.25);
+}
+.lift-sm:active {
+  transform: none;
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(31, 45, 65, 0.2);
+}
+
+.card.lift {
+  text-decoration: none;
+  color: inherit;
+}
 .stretched-link::after {
   position: absolute;
   top: 0;

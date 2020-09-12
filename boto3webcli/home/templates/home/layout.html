@@ -17,7 +17,7 @@
     <link href="{{url_for('static',filename='css/sb-admin-2.css')}}" rel="stylesheet"> 
   </head>
 
-  <body id="page-top">
+  <body class="nav-fixed" id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
       <!-- Sidebar -->
@@ -105,7 +105,7 @@
       </ul>
     <!-- End of Sidebar -->
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper" class="d-flex bg-gray-200 flex-column">
       <!-- Main Content -->
       <div id="content">
         <!-- Topbar -->
@@ -185,7 +185,7 @@
         </nav>
         <!-- End of Topbar -->
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid bg-gray-200">
           {% block content%}{% endblock %}
         </div>
       <!-- End of Main Content -->
@@ -194,7 +194,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
+            <span>Copyright &copy; Boto3 Web Cli 2020</span>
           </div>
         </div>
       </footer>

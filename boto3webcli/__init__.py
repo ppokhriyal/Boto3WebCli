@@ -28,7 +28,9 @@ login_manager.login_message_category = 'info'
 #Import Blueprint routes objects
 from boto3webcli.user_management.routes import blue
 from boto3webcli.home.routes import blue
+from boto3webcli.awsaccesskey.routes import blue
 
 #Register Blueprint
 app.register_blueprint(user_management.routes.blue,url_prefix='/')
 app.register_blueprint(home.routes.blue,url_prefix='/')
+app.register_blueprint(awsaccesskey.routes.blue,url_prefix='/')

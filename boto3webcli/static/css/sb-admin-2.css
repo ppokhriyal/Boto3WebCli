@@ -4120,7 +4120,42 @@ input[type="button"].btn-block {
   flex-grow: 1;
   text-align: center;
 }
-
+.nav-fixed .topnav {
+  z-index: 1039;
+}
+.nav-fixed #layoutSidenav #layoutSidenav_nav {
+  width: 15rem;
+  height: 100vh;
+  z-index: 1038;
+}
+.nav-fixed #layoutSidenav #layoutSidenav_nav .sidenav {
+  padding-top: 3.625rem;
+}
+.nav-fixed #layoutSidenav #layoutSidenav_nav .sidenav .sidenav-menu {
+  overflow-y: hidden;
+}
+.nav-fixed #layoutSidenav #layoutSidenav_nav .sidenav .sidenav-menu::-webkit-scrollbar {
+  width: 0.75rem;
+}
+.nav-fixed #layoutSidenav #layoutSidenav_nav .sidenav .sidenav-menu::-webkit-scrollbar-thumb {
+  border-radius: 10rem;
+  border-width: 0.2rem;
+  border-style: solid;
+  background-clip: padding-box;
+  background-color: rgba(31, 45, 65, 0.2);
+  border-color: transparent;
+}
+.nav-fixed #layoutSidenav #layoutSidenav_nav .sidenav .sidenav-menu::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.nav-fixed #layoutSidenav #layoutSidenav_nav .sidenav .sidenav-menu::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+.nav-fixed #layoutSidenav #layoutSidenav_nav .sidenav .sidenav-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
 .tab-content > .tab-pane {
   display: none;
 }

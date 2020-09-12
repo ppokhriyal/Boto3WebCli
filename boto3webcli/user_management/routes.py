@@ -5,6 +5,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from boto3webcli.models import User
 from flask_mail import Message
 from itsdangerous.exc import SignatureExpired,BadTimeSignature
+import os
+import pyotp
 
 #Blueprint object
 blue = Blueprint('user_management',__name__,template_folder='templates')
@@ -18,10 +20,15 @@ def login():
 		user = User.query.filter_by(email=form.email.data).first()
 		#Check if email,password and confirm email is True
 		if user and bcrypt.check_password_hash(user.password,form.password.data) and user.confirm_email == True:
-			#If user has checked remember me
-			login_user(user,remember=form.remember.data)
-			next_page = request.args.get('next')
-			return redirect(next_page) if next_page else redirect(url_for('home.home'))
+			
+			#Check if User has enabled MFA
+			if user.mfa_enabled == True:
+				return redirect(url_for('user_management.mfalogin',useremail=user.email,rem=form.remember.data))
+			else:
+				#If user has checked remember me
+				login_user(user,remember=form.remember.data)
+				next_page = request.args.get('next')
+				return redirect(next_page) if next_page else redirect(url_for('home.home'))
 		else:
 			flash('Login Unsuccessful. Please check email or password or your email id is not yet confirmed.','danger')	
 	return render_template('user_management/login.html',title="Login",form=form)
@@ -76,7 +83,7 @@ def confirm_email(token,user_id):
 #Message
 @blue.route('/message/<msg>')
 def message(msg):
-	return render_template('user_management/message.html',msg=msg)
+	return render_template('user_management/message.html',title="Message",msg=msg)
 
 
 #Forgot Password
@@ -120,4 +127,24 @@ def reset_password(userid):
 		user.password = hashed_password
 		db.session.commit()
 		flash("Your new password has ben set successfully",'success')
+		return redirect(url_for('user_management.login'))
+
+#MFA Login
+@blue.route('/mfalogin/<string:useremail>/<string:rem>',methods=['POST','GET'])
+def mfalogin(useremail,rem):
+	user = User.query.filter_by(email=useremail).first()
+	return render_template('user_management/mfa_authentication.html',title='MFA Login',user=user,rem=rem)
+
+#MFA Authentication
+@blue.route('/mfa/authentication/<string:useremail>/<string:mfakey>/<string:rem>',methods=['POST','GET'])
+def mfa_authentication(useremail,mfakey,rem):
+	user = User.query.filter_by(email=useremail).first()
+	totp = pyotp.TOTP(mfakey)
+	#Verify OTP
+	if totp.now() == request.form['verificationcode']:
+		login_user(user,remember=rem)
+		next_page = request.args.get('next')
+		return redirect(next_page) if next_page else redirect(url_for('home.home'))
+	else:
+		flash('Login Unsuccessful.Please check the Verification code','danger')
 		return redirect(url_for('user_management.login'))

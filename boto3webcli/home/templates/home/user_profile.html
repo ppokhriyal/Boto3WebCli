@@ -1,0 +1,96 @@
+{% extends 'home/layout.html' %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+  </ol>
+</nav>
+<div class="row">
+	<!--Profile Image-->
+	<div class="col-xl-3">
+		<div class="card">
+			<div class="card-header">Profile Picture</div>
+			<div class="card-body text-center">
+                <!-- Profile picture image-->
+                <img class="img-account-profile img-thumbnail rounded-circle mb-2" src="{{image_file}}" alt="">
+                <!-- Profile picture help block-->
+                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+            </div>
+		</div>
+	</div>
+	<!--Account Detail-->
+	<div class="col-xl-8">
+        <div class="card mb-4">
+            <div class="card-header">Account Details</div>
+                <div class="card-body">
+                    <form method="POST" action="" enctype="multipart/form-data">
+                    	{{ form.hidden_tag() }}
+                        <!-- Form Row-->
+                        <div class="form-row">
+                            <!-- Form Group (first name)-->
+                            <div class="form-group col-md-6">
+                                <label class="small mb-1" for="inputFirstName">First name</label>
+                                <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" value="{{current_user.firstname}}" readonly>
+                            </div>
+                            <!-- Form Group (last name)-->
+                            <div class="form-group col-md-6">
+                                <label class="small mb-1" for="inputLastName">Last name</label>
+                                <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" value="{{current_user.lastname}}" readonly>
+                            </div>
+                        </div>
+                        <!-- Form Row-->
+                        <!-- Form Group (email address)-->
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                            <input class="form-control" id="inputEmailAddress" type="email" placeholder="Enter your email address" value="{{current_user.email}}" readonly>
+                        </div>
+                        <div class="form-group">
+                        	{% if form.password.errors %}
+                            	<label class="small mb-1" for="inputEmailAddress">New Password</label>
+                       			{{ form.password(class="form-control is-invalid")}}
+                       			<div class="invalid-feedback">
+                       				{% for error in form.password.errors %}
+                       					<span>{{ error }}</span>
+                       				{% endfor %}
+                       			</div>
+                            {% else %}
+                            	<label class="small mb-1" for="inputEmailAddress">New Password</label>
+                            	{{ form.password(class="form-control",placeholder="Enter your new password")}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.confirm_password.errors %}
+                            	<label class="small mb-1" for="inputEmailAddress">Confirm new password</label>
+                       			{{ form.confirm_password(class="form-control is-invalid")}}
+                       			<div class="invalid-feedback">
+                       				{% for error in form.confirm_password.errors %}
+                       					<span>{{ error }}</span>
+                       				{% endfor %}
+                       			</div>
+                            {% else %}
+                            	<label class="small mb-1" for="inputEmailAddress">Confirm new password</label>
+                            	{{ form.password(class="form-control",placeholder="Confirm new password")}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                        	{{ form.picture.label() }}
+      						{{ form.picture(class="form-control-file") }}
+      							{% if form.picture.errors %}
+      								{% for error in form.picture.errors %}
+      									<span class="text-danger">{{ error }}</span></br>
+      								{% endfor %}
+      							{% endif %}		
+                        </div>
+                        <!-- Form Row-->
+                        <div class="form-row">
+                        	<!-- Save changes button-->
+                        	{{ form.submit(class="btn btn-primary")}}
+                        </div>	
+                    </form>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>	
+{% endblock content %}

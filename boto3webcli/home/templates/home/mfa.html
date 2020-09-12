@@ -1,0 +1,35 @@
+{% extends 'home/layout.html' %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">MFA</li>
+  </ol>
+</nav>
+<div class="card mb-4 mt-4">
+    <div class="card-body p-4">
+        <div class="row">
+            <div class="col">
+                <h4 class="text-primary">Protect your account with 2-Step Verification</h4>
+                    <p class="text-gray-700">Each time you sign in to your Account, you'll need your password and a verification code.</p>
+                    <img src="{{url_for('static',filename='images/mfa.svg')}}" class=" mb-5 mx-auto d-block img-fluid w-50" alt="Responsive image">
+            </div>
+            <div class="col">
+            	{% if current_user.mfa_enabled == True %}
+            		<div class="alert alert-success alert-icon" role="alert">
+    					<div class="alert-icon-content">
+        					<h6 class="alert-heading text-center">2-Step Multifactor Authentication is enabled.</h6>
+        					<a class="btn btn-primary btn-block btn-danger" href="{{url_for('home.mfadisabled',userid=current_user.id)}}" role="button">Disable MFA</a>
+    					</div>
+					</div>
+            	{% else %}
+            		<p>Please open the Google Authenticator app from your Mobile and scan the below QRcode.</p>
+            		<img src="{{url_for('static',filename='qr_code_img/'+qrimg_name)}}" class="mx-auto d-block img-fluid  w-50" alt="MFA QRCode">
+            		<p class="text-center text-dark ">I'm done, take me to the<a class="ml-1" href="{{url_for('home.mfaenabled',userid=current_user.id ,mfa_key=mfa_key)}}">Login</a> page.</p>
+            	{% endif %}		
+            	
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

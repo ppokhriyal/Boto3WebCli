@@ -1,0 +1,21 @@
+{% extends 'user_management/layout.html' %}
+{% block content %}
+<div class="col-lg-5">
+	<div class="card shadow-lg border-0 rounded-lg mt-5">
+		<div class="card-header justify-content-center">
+			<h2 class="text-center display-4">Boto3 Web Cli</h2>
+			<h3 class="font-weight-light my-2">2-Step MFA Authentication</h3>
+		</div>
+		<div class="card-body">
+			<div class="small mb-3 text-muted">
+				Please enter the verification code generated for your account in Google Authenticator App.
+			</div>
+			<form class="form-signin" method="POST" action="{{url_for('user_management.mfa_authentication',useremail=user.email,mfakey=user.mfa_key,rem=rem)}}">
+				<input type="text" class="form-control" name="verificationcode" placeholder="Enter Verification Code">
+				<a class="small" href="{{url_for('user_management.login')}}">Return to login</a>
+				<button type="submit" class="btn btn-primary btn-sm mt-3 float-right">Verify Code</button>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock content %}

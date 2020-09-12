@@ -21,6 +21,8 @@ class User(db.Model,UserMixin):
 	email = db.Column(db.String(120),unique=True,nullable=False)
 	password = db.Column(db.String(60),nullable=False)
 	confirm_email = db.Column(db.Boolean,default=False)
+	mfa_enabled = db.Column(db.Boolean,default=False)
+	mfa_key = db.Column(db.String(20),unique=True)
 	image_file = db.Column(db.String(20),nullable=False,default='default_user.png')
 
 	def __repr__(self):

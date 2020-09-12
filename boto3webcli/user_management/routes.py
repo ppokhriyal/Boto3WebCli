@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,url_for, flash, redirect, request, abort, session
 from boto3webcli import app,db,bcrypt,login_manager,mail,safe_seralizer
 from boto3webcli.user_management.forms import LoginForm,RegisterForm,ForgotPasswordForm,ResetPassword
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import login_user, current_user, logout_user, login_required,fresh_login_required
 from boto3webcli.models import User
 from flask_mail import Message
 from itsdangerous.exc import SignatureExpired,BadTimeSignature

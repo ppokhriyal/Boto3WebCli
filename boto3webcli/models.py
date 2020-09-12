@@ -24,6 +24,20 @@ class User(db.Model,UserMixin):
 	mfa_enabled = db.Column(db.Boolean,default=False)
 	mfa_key = db.Column(db.String(20),unique=True)
 	image_file = db.Column(db.String(20),nullable=False,default='default_user.png')
+	access_key = db.relationship('AccessKey',backref='aws_access_key',lazy=True,cascade='all,delete-orphan')
 
 	def __repr__(self):
 		return f"User('{self.firstname}','{self.email}')"
+
+#AWS Access Key
+class AccessKey(db.Model):
+	__bind_key__ = 'accesskey'
+	id = db.Column(db.Integer,primary_key=True)
+	keyname = db.Column(db.String(20),unique=True,nullable=False)
+	accesskeyid = db.Column(db.String(50),unique=True,nullable=False)
+	secretkeyid = db.Column(db.String(50),unique=True,nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
+	
+	def __repr__(self):
+		return f"AccessKey('{self.keyname}','{self.accesskeyid}')"

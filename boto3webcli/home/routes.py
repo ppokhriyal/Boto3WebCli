@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,url_for, flash, redirect, request, abort, session
 from boto3webcli import app,db,bcrypt,mail,safe_seralizer,login_manager
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import login_user, current_user, logout_user, login_required,fresh_login_required
 from boto3webcli.models import User
 from boto3webcli.home.forms import UpdateAccountForm
 import os
@@ -16,6 +16,7 @@ blue = Blueprint('home',__name__,template_folder='templates')
 
 #Home Page
 @blue.route('/home')
+@fresh_login_required
 def home():
 	return render_template("home/home.html",title="Home")
 
@@ -34,6 +35,7 @@ def save_pictute(form_picture):
 
 #User Profile
 @blue.route('/user_profile',methods=['GET','POST'])
+@fresh_login_required
 def user_profile():
 	form = UpdateAccountForm()
 	if form.validate_on_submit():
@@ -77,6 +79,7 @@ def qrcode_generator(user_email_id):
 
 #MFA
 @blue.route('/mfa')
+@fresh_login_required
 def mfa():
 	if current_user.mfa_enabled != True:
 		qrimg_name = qrcode_generator(current_user.email)
@@ -86,6 +89,7 @@ def mfa():
 
 #MFA Enabled and Logout
 @blue.route('/home/mfa_enabled/<int:userid>/<string:mfa_key>')
+@fresh_login_required
 def mfaenabled(userid,mfa_key):
 	user = User.query.get(userid)
 	user.mfa_key = mfa_key
@@ -97,6 +101,7 @@ def mfaenabled(userid,mfa_key):
 
 #MFA Disabled and Logout
 @blue.route('/home/mfa_disabled/<int:userid>')
+@fresh_login_required
 def mfadisabled(userid):
 	user = User.query.get(userid)
 	user.mfa_enabled = False

@@ -1,9 +1,38 @@
 {% extends 'home/layout.html' %}
 {% block content %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">AWS Access Key Management</li>
-  </ol>
-</nav>
+	<nav aria-label="breadcrumb">
+  	<ol class="breadcrumb">
+    	<li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Dashboard</a></li>
+    	<li class="breadcrumb-item active" aria-current="page">AWS Access Key Management</li>
+  	</ol>
+	</nav>
+	<div class="container">
+        <div class="row">
+            <div class="col-xxl-4 col-xl-12 mb-4">
+                <div class="card h-100">
+                    <div class="card-body h-100 d-flex flex-column justify-content-center py-5 py-xl-4">
+                        <div class="row align-items-center">
+                            <div class="col-xl-8 col-xxl-12">
+                                <div class="text-center px-4 mb-4 mb-xl-0 mb-xxl-4">
+                                    <h2 class="text-warning">AWS Access Key Management</h2>
+                                        <p class="text-gray-700 mb-0">Add your AWS Access key to your project and manage all your aws resource services.</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-xxl-12 text-center"><img class="img-fluid" src="{{url_for('static',filename='images/processing-qqpana.svg')}}" style="max-width: 13rem;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if accesskeydb_len == 0 %}
+            	<div class="col-xxl-4 col-xl-12 mb-4">
+            		<a class="btn btn-primary rounded-0 float-right" href="{{url_for('awsaccesskey.awsaccesskey_add')}}" role="button">Add AWS Access Key</a>
+            	</div>	
+            {% else %}
+            	<div class="col-xxl-4 col-xl-12 mb-4">
+            		<a class="btn btn-primary rounded-0 float-right" href="#" role="button">Add AWS Access Key</a>
+            	</div>
+            {% endif %}
+        </div>
+    </div>        
 {% endblock content %}

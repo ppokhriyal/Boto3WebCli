@@ -1,0 +1,29 @@
+{% extends 'home/layout.html' %}
+{% block content %}
+	<nav aria-label="breadcrumb">
+  		<ol class="breadcrumb">
+    		<li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Dashboard</a></li>
+    		<li class="breadcrumb-item active" aria-current="page">Project Build</li>
+  		</ol>
+  	</nav>
+  	<div class="container">
+  		<div class="row">
+  			<div class="col-xxl-4 col-xl-12 mb-4">
+  				<div class="card card-waves h-100">
+                    <div class="card-body h-100 d-flex flex-column justify-content-center py-5 py-xl-4">
+                        <div class="row align-items-center">
+                            <div class="col-xl-8 col-xxl-12">
+                                <div class="text-center px-4 mb-4 mb-xl-0 mb-xxl-4">
+                                    <h2 class="text-warning">Build Projects</h2>
+                                        <p class="text-gray-700 mb-0">Start building your Projects,with Access Key,EC2,S3 and other resource services.</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-xxl-12 text-center"><img class="img-fluid" src="{{url_for('static',filename='images/browser-stats-pana.svg')}}" style="max-width: 13rem;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+  			</div>
+  		</div>
+  	</div>
+{% endblock content %}

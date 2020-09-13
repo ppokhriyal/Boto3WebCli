@@ -29,6 +29,17 @@ class User(db.Model,UserMixin):
 	def __repr__(self):
 		return f"User('{self.firstname}','{self.email}')"
 
+#Project DB Model
+class Project(db.Model):
+	__bind_key__ = 'project'
+	id = db.Column(db.Integer,primary_key=True)
+	projectname = db.Column(db.String(50),unique=True,nullable=False)
+	date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
+	accesskey_db = db.relationship('AccessKey',backref='aws_access_key_child',uselist=False)
+
+	def __repr__(self):
+		return f"Project('{self.projectname}')"
+
 #AWS Access Key
 class AccessKey(db.Model):
 	__bind_key__ = 'accesskey'
@@ -36,8 +47,9 @@ class AccessKey(db.Model):
 	keyname = db.Column(db.String(20),unique=True,nullable=False)
 	accesskeyid = db.Column(db.String(50),unique=True,nullable=False)
 	secretkeyid = db.Column(db.String(50),unique=True,nullable=False)
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
 	
 	def __repr__(self):
 		return f"AccessKey('{self.keyname}','{self.accesskeyid}')"

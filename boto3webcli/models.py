@@ -25,6 +25,7 @@ class User(db.Model,UserMixin):
 	mfa_key = db.Column(db.String(20),unique=True)
 	image_file = db.Column(db.String(20),nullable=False,default='default_user.png')
 	access_key = db.relationship('AccessKey',backref='aws_access_key',lazy=True,cascade='all,delete-orphan')
+	projects = db.relationship('Project',backref='user_project',lazy=True,cascade='all,delete-orphan')
 
 	def __repr__(self):
 		return f"User('{self.firstname}','{self.email}')"
@@ -36,6 +37,7 @@ class Project(db.Model):
 	projectname = db.Column(db.String(50),unique=True,nullable=False)
 	date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
 	accesskey_db = db.relationship('AccessKey',backref='aws_access_key_child',uselist=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def __repr__(self):
 		return f"Project('{self.projectname}')"
@@ -52,4 +54,4 @@ class AccessKey(db.Model):
 	project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
 	
 	def __repr__(self):
-		return f"AccessKey('{self.keyname}','{self.accesskeyid}')"
+		return f"AccessKey('{self.keyname}','{self.accesskeyid}','{self.project_id}')"

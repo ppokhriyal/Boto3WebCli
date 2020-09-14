@@ -1,0 +1,124 @@
+{% extends 'home/layout.html' %}
+{% block content %}
+	<nav aria-label="breadcrumb">
+    	<ol class="breadcrumb">
+    		<li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Dashboard</a></li>
+    		<li class="breadcrumb-item"><a href="{{url_for('project.project_home')}}">Projects</a></li>
+    		<li class="breadcrumb-item active" aria-current="page">Create New Project</li>
+  		</ol>
+  	</nav>
+  	<div class="container">
+  		<div class="row">
+  			<div class="col-xxl-4 col-xl-12 mb-4">
+  				<div class="card card-waves h-100">
+  					<div class="card-body h-100 d-flex flex-column justify-content-center py-5 py-xl-4">
+  						<div class="row align-items-center">
+  							<div class="col-xl-8 col-xxl-12">
+  								<div class="text-center px-4 mb-4 mb-xl-0 mb-xxl-4">
+  									<h2 class="text-warning">Create New Project</h2>
+  									<p class="text-gray-700 text-left">Start building your Project with Access Key and start managing your EC2,S3 and other resource services.</p>
+  								</div>
+  							</div>
+  							<div class="col-xl-4 col-xxl-12 text-center">
+  								<img class="img-fluid" src="{{url_for('static',filename='images/browser-stats-pana.svg')}}" style="max-width: 13rem;">
+  							</div>
+  						</div>
+  					</div>
+  				</div>
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col-xxl-4 col-xl-6 mb-4">
+  				<div class="card mb-4">
+  					<div class="card-header text-primary">Create New Project</div>
+  					<div class="card-body">
+  						<form method="POST" action="">
+  							{{form.hidden_tag()}}
+  							<div class="form-group">
+  								{% if form.projectname.errors %}
+  									<label class="small mb-1" for="inputKeyName">Project Name</label>
+  									{{ form.projectname(class="form-control is-invalid")}}
+  									<div class="invalid-feedback">
+  										{% for error in form.projectname.errors %}
+  											<span>{{ error }}</span>
+  										{% endfor %}
+  									</div>
+  								{% else %}
+  									<label class="small mb-1" for="inputKeyName">Project Name</label>
+  									{{ form.projectname(class="form-control")}}	
+  								{% endif %}
+  							</div>
+  							<div class="form-group">
+  								{% if form.access_keyname.errors %}
+  									<label class="small mb-1" for="inputKeyName">Access Key Name</label>
+  									{{ form.access_keyname(class="form-control is-invalid")}}
+  									<div class="invalid-feedback">
+  										{% for error in form.access_keyname.errors %}
+  											<span>{{ error }}</span>
+  										{% endfor %}
+  									</div>
+  								{% else %}
+  									<label class="small mb-1" for="inputKeyName">Access Key Name</label>
+  									{{ form.access_keyname(class="form-control",id="accesskey_input")}}	
+  								{% endif %}
+  							</div>
+  							{{form.submit(class="btn btn-primary")}}
+  						</form>
+  					</div>
+  				</div>
+  			</div>
+  			<div class="col-xxl-4 col-xl-6 mb-4">
+  				<div class="card mb-4">
+  					<div class="card-header">AWS Access Keys</div>
+  					<div class="card-body">
+  						<table class="table table-bordered table-hover table-sm" id="accesskey_table">
+  							<thead class="text-primary">
+  								<tr>
+  									<th scope="col">Key Name</th>
+  									<th scope="col">Available to Project</th>
+  								</tr>
+  							</thead>
+  							<tbody>
+  								{% if accesskey_list_len == 0 %}
+  									<tr>
+  										<td>NA</td>
+  										<td>NA</td>
+  									</tr>
+  								{% else %}
+  									{% for i in accesskey_list.items %}
+  										<tr>
+  											<td>{{i.keyname}}</td>
+  											{% if i.project_id == None %}
+  												<td><button type="button" class=" btn btn-sm btn-info" onclick="addaccesskey(this)">Add</button></td>
+  											{% endif %}
+  										</tr>
+  										<script type="text/javascript">
+  											function addaccesskey(obj){
+  											var keyname = $(obj).closest('tr').find('td:first-child').text();
+  											document.getElementById("accesskey_input").value = keyname;
+  											};
+  										</script>
+  									{% endfor %}
+  								{% endif %}
+  							</tbody>
+  						</table>
+  						<div class="rounded-0">
+							{% for page_num in accesskey_list.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+    							{% if page_num %}
+        							{% if accesskey_list.page == page_num %}
+          								<a class="btn btn-primary btn-sm mt-2" href="{{ url_for('project.project_add',page=page_num)}}">{{ page_num }}</a>
+        							{% else %}
+          								<a class="btn btn-outline-info mt-2" href="{{ url_for('project.project_add',page=page_num)}}">{{ page_num }}</a>
+        							{% endif %}  
+      							{% else %}
+        							...
+      							{% endif %}
+    						{% endfor %}
+    					</div>
+  					</div>
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  	
+{% endblock content %}

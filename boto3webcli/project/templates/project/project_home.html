@@ -28,7 +28,22 @@
       <div class="col-xxl-4 col-xl-12 mb-4">
         {% if projectdb_len == 0 %}
           <a class="btn btn-primary rounded-0 float-right" href="{{url_for('project.project_add')}}" role="button">Add New Project</a>
-        {% else %}  
+        {% else %}
+          <a class="btn btn-primary rounded-0 float-right" href="{{url_for('project.project_add')}}" role="button">Add New Project</a>
+          {% for i in project_record.items %}
+            <div class="card-deck">
+              <div class="card">
+                <div class="card-header">Header
+                </div>
+                <div class="card-body">
+                  project info
+                </div>
+                <div class="card-footer">
+                  footer
+                </div>
+              </div>
+            </div>
+          {% endfor %}  
         {% endif %}
       </div>
   	</div>

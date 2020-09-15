@@ -24,8 +24,8 @@ class User(db.Model,UserMixin):
 	mfa_enabled = db.Column(db.Boolean,default=False)
 	mfa_key = db.Column(db.String(20),unique=True)
 	image_file = db.Column(db.String(20),nullable=False,default='default_user.png')
-	access_key = db.relationship('AccessKey',backref='aws_access_key',lazy=True,cascade='all,delete-orphan')
-	projects = db.relationship('Project',backref='user_project',lazy=True,cascade='all,delete-orphan')
+	access_key = db.relationship('AccessKey',backref='user',lazy=True,cascade='all,delete-orphan')
+	projects = db.relationship('Project',backref='user',lazy=True,cascade='all,delete-orphan')
 
 	def __repr__(self):
 		return f"User('{self.firstname}','{self.email}')"
@@ -35,12 +35,13 @@ class Project(db.Model):
 	__bind_key__ = 'project'
 	id = db.Column(db.Integer,primary_key=True)
 	projectname = db.Column(db.String(50),unique=True,nullable=False)
+	accesskeyname = db.Column(db.String(20),unique=True,nullable=False)
 	date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
-	accesskey_db = db.relationship('AccessKey',backref='aws_access_key_child',uselist=False)
+	accesskey_db = db.relationship('AccessKey',backref='project',uselist=False)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def __repr__(self):
-		return f"Project('{self.projectname}')"
+		return f"Project('{self.projectname}','{self.accesskey_db}','{self.user_id}')"
 
 #AWS Access Key
 class AccessKey(db.Model):

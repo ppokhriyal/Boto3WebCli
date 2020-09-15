@@ -85,21 +85,23 @@
   										<td>NA</td>
   									</tr>
   								{% else %}
-  									{% for i in accesskey_list.items %}
-  										<tr>
-  											<td>{{i.keyname}}</td>
-  											{% if i.project_id == None %}
-  												<td><button type="button" class=" btn btn-sm btn-info" onclick="addaccesskey(this)">Add</button></td>
-  											{% endif %}
-  										</tr>
+  								  {% for i in accesskey_list.items %}
+                      {% if i.project_id == None %}
+                        <tr>
+                            <td>{{i.keyname}}</td>
+                            <td><button type="button" class=" btn btn-sm btn-info" onclick="addaccesskey(this)">Add</button></td>
+                        </tr>
+                      {% else %}
+                        <p class="text-info">Access Keys not available for Project.Please first add Access Key</p>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}   
   										<script type="text/javascript">
   											function addaccesskey(obj){
   											var keyname = $(obj).closest('tr').find('td:first-child').text();
   											document.getElementById("accesskey_input").value = keyname;
   											};
   										</script>
-  									{% endfor %}
-  								{% endif %}
   							</tbody>
   						</table>
   						<div class="rounded-0">

@@ -48,6 +48,9 @@ def verify_key(accesskey,secretkey):
 def awsaccesskey_remove(accessid):
 	access_id = AccessKey.query.get_or_404(accessid)
 
+	if access_id.user != current_user:
+		abort(403)
+
 	db.session.delete(access_id)
 	db.session.commit()
 	return redirect(url_for('awsaccesskey.awsaccesskey_home'))

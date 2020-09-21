@@ -1,0 +1,40 @@
+{% extends 'home/layout.html' %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+    	<li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Dashboard</a></li>
+    	<li class="breadcrumb-item"><a href="{{url_for('project.project_home')}}">Projects</a></li>
+    	<li class="breadcrumb-item active" aria-current="page">Home : {{project.projectname}} : {{project.project_region}}-region</li>
+  	</ol>
+</nav>
+<div class="container">
+	<div class="row">
+		<div class="col-xxl-4 col-xl-6 mb-4">
+            <div class="card card-header-actions h-100">
+                <div class="card-header text-dark">
+                    Amazon EC2 resources
+                </div>
+                <div class="card-body">
+                </div>
+                <div class="card-footer">
+                	
+                	<a class="btn btn-sm btn-primary rounded-0" href="{{url_for('project.ec2_build')}}" role="button"><i class="fas fa-rocket mr-2"></i> Launch Instance
+                	</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-6 mb-4">
+            <div class="card card-header-actions h-100">
+                <div class="card-header text-dark">
+                    Firewall Security Groups
+                </div>
+                <div class="card-body">
+                </div>
+                <div class="card-footer">
+                	<a class="btn btn-sm btn-primary rounded-0" href="{{url_for('project.ec2_build')}}" role="button"><i class="fas fa-shield-alt mr-2"></i> Create Firewall Rules</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>                    
+{% endblock content %}

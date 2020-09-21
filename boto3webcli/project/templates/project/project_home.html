@@ -3,7 +3,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
     	<li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Dashboard</a></li>
-    	<li class="breadcrumb-item active" aria-current="page">Project</li>
+    	<li class="breadcrumb-item active" aria-current="page">Projects</li>
   	</ol>
   </nav>
   <div class="container">
@@ -15,7 +15,7 @@
               <div class="col-xl-8 col-xxl-12">
                 <div class="text-center px-4 mb-4 mb-xl-0 mb-xxl-4">
                   <h2 class="text-warning">Create Projects</h2>
-                  <p class="text-gray-700 text-left">Start creating your Project with Access Key and start managing your EC2,S3 and other resource services.</p>
+                  <p class="text-gray-700 text-left">Start creating your Project with Access Key and start managing your EC2 and other resource services.</p>
                 </div>
               </div>
               <div class="col-xl-4 col-xxl-12 text-center">
@@ -57,7 +57,7 @@
                           <a href="{{url_for('awsaccesskey.awsaccesskey_remove',accessid=i.id)}}">
                             <i class="fas text-danger fa-trash-alt m-2 lift"></i>
                           </a>
-                          <a href="{{url_for('project.ec2_build')}}" class="text-primary"><i class="fas fa-project-diagram m-2 lift text-secondary"></i></a>
+                          <a href="{{url_for('project.project_dashboard')}}" class="text-primary"><i class="fas fa-project-diagram m-2 lift text-secondary"></i></a>
                         </td>
                       </tr>
                     {% endfor %}

@@ -46,14 +46,20 @@ def project_add():
 	
 	return render_template('project/project_add.html',title='Project Add',form=form,accesskey_list=accesskey_list,accesskey_list_len=accesskey_list_len)
 
+#Project Dashboard
+@blue.route('/project/dashboard')
+def project_dashboard():
+	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
+
+	return render_template('project/project_dashboard.html',title='Project Dashboard',project=project)
+
 #Function for Instance Types
 def instance_types():
 	accesskey = db.session.query(AccessKey).filter(AccessKey.user_id==current_user.id).first()
-	client_ec2 = boto3.client('ec2',region_name='us-west-2',aws_access_key_id=accesskey.accesskeyid,aws_secret_access_key=accesskey.secretkeyid)
-	instance = client_ec2.describe_instance_types(InstanceTypes=['t1.micro','t2.nano','t2.micro','t2.small','t2.medium','t2.large','t2.xlarge','t2.2xlarge',
-		't3.nano','t3.micro','t3.small','t3.medium','t3.large','t3.xlarge','t3.2xlarge','t3a.nano','t3a.micro',
-		't3a.small','t3a.medium','t3a.large','t3a.xlarge','t3a.2xlarge','t4g.nano','t4g.micro','t4g.small',
-		't4g.medium','t4g.large','t4g.xlarge','m1.small','m1.medium','m1.large','m1.xlarge','m3.medium','m3.large'])
+	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
+
+	client_ec2 = boto3.client('ec2',region_name=project.project_region,aws_access_key_id=accesskey.accesskeyid,aws_secret_access_key=accesskey.secretkeyid)
+	instance = client_ec2.describe_instance_types()
 
 	return instance
 
@@ -62,4 +68,5 @@ def instance_types():
 @fresh_login_required
 def ec2_build():
 	instance_type = instance_types()
-	return render_template('project/ec2_build.html',title="EC2 Build",instance_type=instance_type)
+	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
+	return render_template('project/ec2_build.html',title="EC2 Build",instance_type=instance_type,project=project)

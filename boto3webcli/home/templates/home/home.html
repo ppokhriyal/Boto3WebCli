@@ -20,6 +20,21 @@
     </div>
     <div class="container mt-5">
         <div class="row">
+            <!--AWS Access Key-->
+            <div class="col-xxl-4 col-xl-6 mb-4">
+                <a class="card lift h-100 card-waves" href="{{url_for('awsaccesskey.awsaccesskey_home')}}">
+                    <div class="card-body d-flex justify-content-center flex-column">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="mr-3">
+                                <i class="fas fa-key mb-3"></i>
+                                <h5>AWS Access Key</h5>
+                                    <div class="text-muted">Register your AWS access key for access all your aws resources.</div>
+                            </div>
+                            <img class="card-img-top" src="{{url_for('static',filename='images/processing-qqpana.svg')}}" alt="..." style="width: 10rem;">
+                        </div>
+                    </div>
+                </a>
+            </div>
             <!--Build Project-->
             <div class="col-xxl-4 col-xl-6 mb-4">
                 <a class="card lift h-100 card-waves" href="{{url_for('project.project_home')}}">
@@ -36,21 +51,7 @@
                     </div>
                 </a>
             </div>
-        	<!--AWS Access Key-->
-            <div class="col-xxl-4 col-xl-6 mb-4">
-                <a class="card lift h-100 card-waves" href="{{url_for('awsaccesskey.awsaccesskey_home')}}">
-                    <div class="card-body d-flex justify-content-center flex-column">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="mr-3">
-                                <i class="fas fa-key mb-3"></i>
-                                <h5>AWS Access Key</h5>
-                                    <div class="text-muted">Register your AWS access key for access all your aws resources.</div>
-                            </div>
-                            <img class="card-img-top" src="{{url_for('static',filename='images/processing-qqpana.svg')}}" alt="..." style="width: 10rem;">
-                        </div>
-                    </div>
-                </a>
-            </div>
+        	
             
             <!--EC2-->
             <div class="col-xxl-4 col-xl-6 mb-4">

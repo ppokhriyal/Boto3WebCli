@@ -48,6 +48,10 @@
   									{{ form.projectname(class="form-control")}}	
   								{% endif %}
   							</div>
+                <div class="form-group">
+                  <label class="small mb-1" for="inputKeyName">Project Region</label>
+                  {{form.awsregion(class="form-control")}}
+                </div>
   							<div class="form-group">
   								{% if form.access_keyname.errors %}
   									<label class="small mb-1" for="inputKeyName">Access Key Name</label>

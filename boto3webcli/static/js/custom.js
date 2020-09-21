@@ -1,7 +1,6 @@
-//Table Pagination
 $(document).ready(function(){
 	$('#tablepaginate').DataTable({
-		"pagingType": "simple",
+		"pagingType": "full_numbers",
 		"ordering": false
 	});
 	$('.dataTables_length').addClass('bs-select');

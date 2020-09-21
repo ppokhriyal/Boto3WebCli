@@ -13,8 +13,17 @@
     <!--<link href="{{url_for('static',filename='css/all.min.css')}}" rel="stylesheet" type="text/css">-->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
     <!-- Custom styles for this template-->
     <link href="{{url_for('static',filename='css/sb-admin-2.css')}}" rel="stylesheet"> 
+     <style type="text/css">
+       .pagination-page-info{
+        padding:.6em;padding-left:0;width:40em;margin:.5em;margin-left:0;font-size:12px;
+        }
+       .pagination-page-infob {
+        color: black;background:#6aa6ed;padding-left:2px;padding:.1em.25em;font-size:150%;
+        }
+     </style>
   </head>
 
   <body class="nav-fixed" id="page-top">
@@ -212,9 +221,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{url_for('static',filename='js/sb-admin-2.min.js')}}"></script>
-
-  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
   <script src="{{url_for('static',filename='js/custom.js')}}"></script>

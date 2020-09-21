@@ -1,0 +1,277 @@
+{% extends 'home/layout.html' %}
+{% block content %}
+	<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+    	<li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Dashboard</a></li>
+    	<li class="breadcrumb-item active" aria-current="page"><a href="{{url_for('project.project_home')}}">Project</a></li>
+    	<li class="breadcrumb-item active" aria-current="page">EC2</li>
+  	</ol>
+  </nav>
+  <div class="card">
+    <div class="card-header border-bottom">
+        <!-- Wizard navigation-->
+        <div class="nav nav-pills nav-justified flex-column flex-xl-row nav-wizard" id="cardTab" role="tablist">
+            <!-- Wizard navigation item 1-->
+            <a class="nav-item nav-link active" id="wizard1-tab" href="#wizard1" data-toggle="tab" role="tab" aria-controls="wizard1" aria-selected="true">
+            	<div class="wizard-step-icon">1</div>
+                <div class="wizard-step-text">
+                    <div class="wizard-step-text-name text-center mt-2">Choose AMI</div>
+                </div>
+            </a>
+            <!-- Wizard navigation item 2-->
+            <a class="nav-item nav-link" id="wizard2-tab" href="#wizard2" data-toggle="tab" role="tab" aria-controls="wizard2" aria-selected="false">
+            	<div class="wizard-step-icon">2</div>
+            	<div class="wizard-step-text">
+                	<div class="wizard-step-text-name text-center mt-2">Choose an Instance Type</div>
+            	</div>
+            </a>
+            <!-- Wizard navigation item 3-->
+            <a class="nav-item nav-link" id="wizard3-tab" href="#wizard3" data-toggle="tab" role="tab" aria-controls="wizard3" aria-selected="false">
+                <div class="wizard-step-icon">3</div>
+                <div class="wizard-step-text">
+                    <div class="wizard-step-text-name text-center mt-2">Configure Security Group</div>
+                </div>
+            </a>
+            <!-- Wizard navigation item 4-->
+            <a class="nav-item nav-link" id="wizard4-tab" href="#wizard4" data-toggle="tab" role="tab" aria-controls="wizard4" aria-selected="false">
+                <div class="wizard-step-icon">4</div>
+                <div class="wizard-step-text">
+                    <div class="wizard-step-text-name text-center mt-2">Review &amp; Launch Instance</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="cardTabContent">
+            <!-- Wizard tab pane item 1-->
+            <div class="tab-pane py-4 py-xl-10 ml-3 fade active show" id="wizard1" role="tabpanel" aria-labelledby="wizard1-tab">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-6 col-xl-11">
+                        <h3 class="text-primary">Step 1</h3>
+                        <h5 class="card-title">Choose an Amazon Machine Image (AMI - Free Tier)</h5>
+                        <p class="text-muted">An AMI is a template that contains the software configuration (operating system, application server, and applications) required to launch your instance.Select the radio button of AMI image id.</p>
+                        <form>
+                        	<ul class="list-unstyled">
+  								<li class="media">
+    								<img src="{{url_for('static',filename='images/amazon.svg')}}" class="mr-3" alt="..." style="width:60px;height:60px;">
+    								<div class="media-body">
+      									<h6 class="mt-0 mb-1 text-primary">Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type
+      									<div class="form-check m-1">
+      										<input class="form-check-input" type="radio" value="ami-0841edc20334f9287" name="imageRadios"  onclick="amiimageid(this.value)">
+      										<label class="form-check-label m-1" name="imageRadios"for="exampleRadios2"	>
+    											ami-0841edc20334f9287
+  											</label>
+      									</div>
+      									</h6>
+      									<p>The Amazon Linux AMI is an EBS-backed, AWS-supported image. The default image includes AWS command line tools, Python, Ruby, Perl, and Java. The repositories include Docker, PHP, MySQL, PostgreSQL, and other packages.</p>
+      									<p class="text-dark p-1">Root device type: ebs | Virtualization type: hvm  | ENA Enabled: Yes</p>
+    								</div>		
+  								</li>
+  								<hr class="my-1">
+  								<li class="media mt-3">
+    								<img src="{{url_for('static',filename='images/amazon.svg')}}" class="mr-3" alt="..." style="width:60px;height:60px;">
+    								<div class="media-body">
+      									<h6 class="mt-0 mb-1 text-primary">Amazon Linux 2 AMI (HVM), SSD Volume Type
+      										<div class="form-check m-1">
+      											<input class="form-check-input" type="radio" value="ami-01ce4793a2f45922e" name="imageRadios"  onclick="amiimageid(this.value)">
+      											<label class="form-check-label m-1" name="imageRadios"for="exampleRadios2"	>
+    											ami-01ce4793a2f45922e
+  												</label>
+      										</div>
+      									</h6>
+      									<p>Amazon Linux 2 comes with five years support. It provides Linux kernel 4.14 tuned for optimal performance on Amazon EC2, systemd 219, GCC 7.3, Glibc 2.26, Binutils 2.29.1, and the latest software packages through extras.</p>
+      									<p class="text-dark p-1">Root device type: ebs | Virtualization type: hvm  | ENA Enabled: Yes</p>
+    								</div>			
+  								</li>
+  								<hr class="my-1">
+  								<li class="media mt-3">
+    								<img src="{{url_for('static',filename='images/redhat.svg')}}" class="mr-3" alt="..." style="width:60px;height:60px;">
+    								<div class="media-body">
+      									<h6 class="mt-0 mb-1 text-primary">Red Hat Enterprise Linux 8 (HVM), SSD Volume Type
+      										<div class="form-check m-1">
+      											<input class="form-check-input" type="radio" value="ami-02f147dfb8be58a10" name="imageRadios"  onclick="amiimageid(this.value)">
+      											<label class="form-check-label m-1" name="imageRadios"for="exampleRadios2"	>
+    											ami-02f147dfb8be58a10
+  												</label>
+      										</div>
+      									</h6>
+      									<p>Red Hat Enterprise Linux version 8 (HVM), EBS General Purpose (SSD) Volume Type</p>
+      									<p class="text-dark p-1">Root device type: ebs | Virtualization type: hvm  | ENA Enabled: Yes</p>
+    								</div>			
+  								</li>
+  								<hr class="my-1">
+  								<li class="media mt-3">
+    								<img src="{{url_for('static',filename='images/suse.svg')}}" class="mr-3" alt="..." style="width:60px;height:60px;">
+    								<div class="media-body">
+      									<h6 class="mt-0 mb-1 text-primary">SUSE Linux Enterprise Server 15 SP2 (HVM), SSD Volume Type
+      										<div class="form-check m-1">
+      											<input class="form-check-input" type="radio" value="ami-063c2d222d223d0e9" name="imageRadios"  onclick="amiimageid(this.value)">
+      											<label class="form-check-label m-1" name="imageRadios"for="exampleRadios2"	>
+    											ami-063c2d222d223d0e9
+  												</label>
+      										</div>
+      									</h6>
+      									<p>SUSE Linux Enterprise Server 15 Service Pack 2 (HVM), EBS General Purpose (SSD) Volume Type. Public Cloud, Advanced Systems Management, Web and Scripting, and Legacy modules enabled.</p>
+      									<p class="text-dark p-1">Root device type: ebs | Virtualization type: hvm  | ENA Enabled: Yes</p>
+    								</div>			
+  								</li>
+  								<hr class="my-1">
+  								<li class="media mt-3">
+    								<img src="{{url_for('static',filename='images/ubuntu.svg')}}" class="mr-3" alt="..." style="width:60px;height:60px;">
+    								<div class="media-body">
+      									<h6 class="mt-0 mb-1 text-primary">Ubuntu Server 20.04 LTS (HVM), SSD Volume Type
+      										<div class="form-check m-1">
+      											<input class="form-check-input" type="radio" value="ami-06e54d05255faf8f6" name="imageRadios"  onclick="amiimageid(this.value)">
+      											<label class="form-check-label m-1" name="imageRadios"for="exampleRadios2"	>
+    											ami-06e54d05255faf8f6
+  												</label>
+      										</div>
+      									</h6>
+      									<p>Ubuntu Server 20.04 LTS (HVM),EBS General Purpose (SSD) Volume Type. Support available from Canonical (http://www.ubuntu.com/cloud/services).</p>
+      									<p class="text-dark p-1">Root device type: ebs | Virtualization type: hvm  | ENA Enabled: Yes</p>
+    								</div>			
+  								</li>
+  								<hr class="my-1">
+  								<li class="media mt-3">
+    								<img src="{{url_for('static',filename='images/ubuntu.svg')}}" class="mr-3" alt="..." style="width:60px;height:60px;">
+    								<div class="media-body">
+      									<h6 class="mt-0 mb-1 text-primary">Ubuntu Server 18.04 LTS (HVM), SSD Volume Type
+      										<div class="form-check m-1">
+      											<input class="form-check-input" type="radio" value="ami-07a29e5e945228fa1" name="imageRadios"  onclick="amiimageid(this.value)">
+      											<label class="form-check-label m-1" name="imageRadios"for="exampleRadios2"	>
+    											ami-07a29e5e945228fa1
+  												</label>
+      										</div>
+      									</h6>
+      									<p>Ubuntu Server 18.04 LTS (HVM),EBS General Purpose (SSD) Volume Type. Support available from Canonical (http://www.ubuntu.com/cloud/services).</p>
+      									<p class="text-dark p-1">Root device type: ebs | Virtualization type: hvm  | ENA Enabled: Yes</p>
+    								</div>			
+  								</li>
+  								<hr class="my-1">
+  								<li class="media mt-3">
+    								<img src="{{url_for('static',filename='images/suse.svg')}}" class="mr-3" alt="..." style="width:60px;height:60px;">
+    								<div class="media-body">
+      									<h6 class="mt-0 mb-1 text-primary">SUSE Linux Enterprise Server 12 SP5 (HVM), SSD Volume Type
+      										<div class="form-check m-1">
+      											<input class="form-check-input" type="radio" value="ami-088a78f435ef7f78a" name="imageRadios"  onclick="amiimageid(this.value)">
+      											<label class="form-check-label m-1" name="imageRadios"for="exampleRadios2"	>
+    											ami-088a78f435ef7f78a
+  												</label>
+      										</div>
+      									</h6>
+      									<p>SUSE Linux Enterprise Server 12 Service Pack 5 (HVM), EBS General Purpose (SSD) Volume Type. Public Cloud, Advanced Systems Management, Web and Scripting, and Legacy modules enabled.</p>
+      									<p class="text-dark p-1">Root device type: ebs | Virtualization type: hvm  | ENA Enabled: Yes</p>
+    								</div>			
+  								</li>
+  								<hr class="my-1">
+  								<li class="media mt-3">
+    								<img src="{{url_for('static',filename='images/ubuntu.svg')}}" class="mr-3" alt="..." style="width:60px;height:60px;">
+    								<div class="media-body">
+      									<h6 class="mt-0 mb-1 text-primary">Ubuntu Server 16.04 LTS (HVM), SSD Volume Type
+      										<div class="form-check m-1">
+      											<input class="form-check-input" type="radio" value="ami-003ba08113592046f" name="imageRadios"  onclick="amiimageid(this.value)">
+      											<label class="form-check-label m-1" name="imageRadios"for="exampleRadios2"	>
+    											ami-003ba08113592046f
+  												</label>
+      										</div>
+      									</h6>
+      									<p>Ubuntu Server 16.04 LTS (HVM),EBS General Purpose (SSD) Volume Type. Support available from Canonical (http://www.ubuntu.com/cloud/services).</p>
+      									<p class="text-dark p-1">Root device type: ebs | Virtualization type: hvm  | ENA Enabled: Yes</p>
+    								</div>			
+  								</li>
+							</ul>
+                            <hr class="my-4">
+                        </form>
+                        <script type="text/javascript">
+                        	function amiimageid(imageRadios){
+                        		document.getElementById("result").value = imageRadios;
+                        	};
+                        </script>
+                    </div>
+            	</div>
+            </div>
+            <!-- Wizard tab pane item 2-->
+            <div class="tab-pane py-4 py-xl-10 ml-3 fade" id="wizard2" role="tabpanel" aria-labelledby="wizard2-tab">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-6 col-xl-11">
+                        <h3 class="text-primary">Step 2</h3>
+                        <h5 class="card-title">Choose an Instance Type</h5>
+                        <p class="text-muted">Amazon EC2 provides a wide selection of instance types optimized to fit different use cases. Instances are virtual servers that can run applications. They have varying combinations of CPU, memory, storage, and networking capacity, and give you the flexibility to choose the appropriate mix of resources for your applications.</p>
+                        <table class="table table-hover table-sm mt-3 pagination-page-info" id="tablepaginate" style="width:100%">
+                        	<thead class="text-primary">
+                        		<tr>
+                        			<th scope="col">#</th>
+                        			<th scope="col">Type</th>
+                        			<th scope="col">FreeTier</th>
+                        			<th scope="col">vCPUs</th>
+                        			<th scope="col">Memory (MB)</th>
+                        			<th scope="col">Instance Storage (GB)</th>
+                        			<th scope="col">EBS-Optimized</th>
+                        			<th scope="col">Network Performance</th>
+                        			<th scope="col">IPv6 Support</th>
+                        		</tr>
+                        	</thead>
+                        	<tbody>
+                        		{% for i in instance_type['InstanceTypes'] %}
+                        			<tr>
+                        				<td>
+                        					<input type="radio" name="instanceRadios" id="exampleRadios1" value="{{i['InstanceType']}}" onclick="instancetype(this.value)">
+                        				</td>
+                        				<td>{{i['InstanceType']}}</td>
+
+                        				{% if i['FreeTierEligible'] %}
+                        					<td class="text-success">Free</td>
+                        				{% else %}
+                        						<td>NA</td>
+                        				{% endif %}
+                        				
+                        				<td>{{i['VCpuInfo']['DefaultVCpus']}}</td>
+                        				<td>{{i['MemoryInfo']['SizeInMiB']}}</td>
+                        				<td>
+                        					{% if  i['InstanceStorageSupported'] %}
+                        						{{i['InstanceStorageInfo']['Disks'][0]['Count']}} x
+                        						{{i['InstanceStorageInfo']['Disks'][0]['SizeInGB']}}
+                        						({{i['InstanceStorageInfo']['Disks'][0]['Type']}})
+                        					{%else%}
+                        						EBS Only
+                        					{% endif%}
+                        				</td>
+                        				<td>{{i['EbsInfo']['EbsOptimizedSupport']}}</td>
+                        				<td>{{i['NetworkInfo']['NetworkPerformance']}}</td>
+                        				<td>{{i['NetworkInfo']['Ipv6Supported']}}</td>
+                        			</tr>
+                        		{% endfor %}
+                        	</tbody>
+                        </table>
+                        <script type="text/javascript">
+                        	function instancetype(instanceRadios){
+                        		document.getElementById("result").value = instanceRadios;
+                        	};
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!-- Wizard tab pane item 3-->
+            <div class="tab-pane py-4 py-xl-10 fade ml-3" id="wizard3" role="tabpanel" aria-labelledby="wizard3-tab">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-6 col-xl-11">
+                        <h3 class="text-primary">Step 3</h3>
+                        <h5 class="card-title">Configure Security Group</h5>
+                        <p>A security group is a set of firewall rules that control the traffic for your instance. On this page, you can add rules to allow specific traffic to reach your instance. For example, if you want to set up a web server and allow Internet traffic to reach your instance, add rules that allow unrestricted access to the HTTP and HTTPS ports.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Wizard tab pane item 4-->
+            <div class="tab-pane py-5 py-xl-10 fade" id="wizard4" role="tabpanel" aria-labelledby="wizard4-tab">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-6 col-xl-8">
+                        <h3 class="text-primary">Step 4</h3>
+                        <h5 class="card-title">Review the following information and submit</h5>
+                        <input type="text" id="result">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

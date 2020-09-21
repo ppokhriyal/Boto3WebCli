@@ -26,6 +26,7 @@ class User(db.Model,UserMixin):
 	image_file = db.Column(db.String(20),nullable=False,default='default_user.png')
 	access_key = db.relationship('AccessKey',backref='user',lazy=True,cascade='all,delete-orphan')
 	projects = db.relationship('Project',backref='user',lazy=True,cascade='all,delete-orphan')
+	secgroup = db.relationship('SecurityGroup',backref='user',lazy=True,cascade='all,delete-orphan')
 
 	def __repr__(self):
 		return f"User('{self.firstname}','{self.email}')"
@@ -35,9 +36,11 @@ class Project(db.Model):
 	__bind_key__ = 'project'
 	id = db.Column(db.Integer,primary_key=True)
 	projectname = db.Column(db.String(50),unique=True,nullable=False)
+	project_region =  db.Column(db.String(10),nullable=False)
 	accesskeyname = db.Column(db.String(20),unique=True,nullable=False)
 	date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
 	accesskey_db = db.relationship('AccessKey',backref='project',uselist=False)
+
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def __repr__(self):
@@ -56,3 +59,12 @@ class AccessKey(db.Model):
 	
 	def __repr__(self):
 		return f"AccessKey('{self.keyname}','{self.accesskeyid}','{self.project_id}')"
+
+#Security Group aka Firewall Rules
+class SecurityGroup(db.Model):
+	__bind_key__ = 'sg'
+	id = db.Column(db.Integer,primary_key=True)
+	sgname = db.Column(db.String(50))
+	sgdescription= db.Column(db.String(200))
+	vpcid = db.Column(db.String(50))
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

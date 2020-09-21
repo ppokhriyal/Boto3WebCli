@@ -40,6 +40,7 @@
                   <thead class="text-primary">
                       <tr>
                         <th scope="col">Project Name</th>
+                        <th scope="col">Region</th>
                         <th scope="col">Access Keys</th>
                         <th scope="col">Created On</th>
                         <th scope="col">Action</th>
@@ -49,13 +50,14 @@
                     {% for i in project_record.items %}
                       <tr>
                         <td>{{i.projectname}}</td>
+                        <td>{{i.project_region}}</td>
                         <td>{{i.accesskeyname}}</td>
                         <td>{{i.date_created.strftime('%d-%m-%Y')}}</td>
                         <td>
                           <a href="{{url_for('awsaccesskey.awsaccesskey_remove',accessid=i.id)}}">
                             <i class="fas text-danger fa-trash-alt m-2 lift"></i>
                           </a>
-                          <a href="#" class="text-primary"><i class="fas fa-project-diagram m-2 lift text-secondary"></i></a>
+                          <a href="{{url_for('project.ec2_build')}}" class="text-primary"><i class="fas fa-project-diagram m-2 lift text-secondary"></i></a>
                         </td>
                       </tr>
                     {% endfor %}

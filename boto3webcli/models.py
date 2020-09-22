@@ -27,6 +27,7 @@ class User(db.Model,UserMixin):
 	access_key = db.relationship('AccessKey',backref='user',lazy=True,cascade='all,delete-orphan')
 	projects = db.relationship('Project',backref='user',lazy=True,cascade='all,delete-orphan')
 	secgroup = db.relationship('SecurityGroup',backref='user',lazy=True,cascade='all,delete-orphan')
+	vpcs = db.relationship('Vpc',backref='user',lazy=True,cascade='all,delete-orphan')
 
 	def __repr__(self):
 		return f"User('{self.firstname}','{self.email}')"
@@ -40,11 +41,25 @@ class Project(db.Model):
 	accesskeyname = db.Column(db.String(20),unique=True,nullable=False)
 	date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
 	accesskey_db = db.relationship('AccessKey',backref='project',uselist=False)
-
+	vpcsdb = db.relationship('Vpc',backref='project',lazy=True,cascade='all,delete-orphan')
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def __repr__(self):
 		return f"Project('{self.projectname}','{self.accesskey_db}','{self.user_id}')"
+
+#VPCs DB
+class Vpc(db.Model):
+	__bind_key__ = 'vpcs'
+	id = db.Column(db.Integer,primary_key=True)
+	vpcid = db.Column(db.String(50),unique=True)
+	ownerid = db.Column(db.String(50))
+	vpc_state = db.Column(db.String(50))
+	cidrblock = db.Column(db.String(50))
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
+
+	def __repr__(self):
+		return f"VpcId : {self.vpcid}-CidrBlock : {self.cidrblock}"
 
 #AWS Access Key
 class AccessKey(db.Model):
@@ -67,4 +82,5 @@ class SecurityGroup(db.Model):
 	sgname = db.Column(db.String(50))
 	sgdescription= db.Column(db.String(200))
 	vpcid = db.Column(db.String(50))
+	inboubd = db.Column(db.String(1000))
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

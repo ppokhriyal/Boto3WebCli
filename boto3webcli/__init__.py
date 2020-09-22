@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '878436c0a462c4145fa59eec2c43a66a'
 app.config.from_pyfile('mailconfig.cfg')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_BINDS'] = {'users':'sqlite:///users.db','accesskey':'sqlite:///accesskey.db','project':'sqlite:///project.db','sg':'sqlite:///sg.db'}
+app.config['SQLALCHEMY_BINDS'] = {'users':'sqlite:///users.db','accesskey':'sqlite:///accesskey.db','project':'sqlite:///project.db','sg':'sqlite:///sg.db','vpcs':'sqlite:///vpcs.db'}
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(seconds=120)
 
 safe_seralizer = URLSafeTimedSerializer(app.config['SECRET_KEY'])

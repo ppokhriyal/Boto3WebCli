@@ -1,8 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField
+from boto3webcli import app,db,bcrypt,login_manager,mail,safe_seralizer
+from flask_login import login_user, current_user, logout_user, login_required,fresh_login_required
+from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from boto3webcli.models import User,AccessKey,Project
-
+from boto3webcli.models import User,AccessKey,Project,Vpc
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+import botocore
+import boto3
 
 #Add New Project
 class NewProjectForm(FlaskForm):
@@ -29,3 +33,15 @@ class NewProjectForm(FlaskForm):
 	def validate_access_keyname(self,access_keyname):
 		if " " in access_keyname.data:
 			raise ValidationError("Space not allowed.")
+#Query VPC
+def query_vpc():
+
+	return Vpc.query
+
+#Add Firewall Security Group
+class Firewall_SG_Form(FlaskForm):
+	sgname = StringField('Security group name',validators=[DataRequired(),Length(min=2,max=50)])
+	description = StringField('Description',validators=[DataRequired(),Length(min=10,max=150)])
+	vpc = QuerySelectField('VPC',query_factory=query_vpc)
+	inbound_rules = TextAreaField('Inbound Rules')
+	submit = SubmitField('Create Firewall Security Group')

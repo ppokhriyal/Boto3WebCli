@@ -4,7 +4,7 @@
     <ol class="breadcrumb">
     	<li class="breadcrumb-item"><a href="{{url_for('home.home')}}">Dashboard</a></li>
     	<li class="breadcrumb-item active" aria-current="page"><a href="{{url_for('project.project_home')}}">Project</a></li>
-      <li class="breadcrumb-item active" aria-current="page"><a href="{{url_for('project.project_dashboard')}}">Home : {{project.projectname}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="{{url_for('project.project_dashboard')}}">{{project.projectname}} : {{project.project_region}}-region</a></li>
     	<li class="breadcrumb-item active" aria-current="page">EC2</li>
   	</ol>
   </nav>

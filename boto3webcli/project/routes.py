@@ -1,8 +1,8 @@
 from flask import Blueprint,render_template,url_for, flash, redirect, request, abort, session
 from boto3webcli import app,db,bcrypt,login_manager,mail,safe_seralizer
 from flask_login import login_user, current_user, logout_user, login_required,fresh_login_required
-from boto3webcli.project.forms import NewProjectForm
-from boto3webcli.models import User,Project,AccessKey,SecurityGroup
+from boto3webcli.project.forms import NewProjectForm,Firewall_SG_Form
+from boto3webcli.models import User,Project,AccessKey,SecurityGroup,Vpc
 import botocore
 import boto3
 import json
@@ -42,6 +42,16 @@ def project_add():
 		accesskey_db.project_id = project_db.id
 		db.session.commit()
 
+		#Add VPC Info
+		accesskey = db.session.query(AccessKey).filter(AccessKey.user_id==current_user.id).first()
+		project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
+		client = boto3.client('ec2',region_name=project.project_region,aws_access_key_id=accesskey.accesskeyid,aws_secret_access_key=accesskey.secretkeyid)
+		vpc_response = client.describe_vpcs()
+		vpc = Vpc(vpcid=vpc_response['Vpcs'][0]['VpcId'],ownerid=vpc_response['Vpcs'][0]['OwnerId'],vpc_state=vpc_response['Vpcs'][0]['State'],cidrblock=vpc_response['Vpcs'][0]['CidrBlock'],user=current_user,project=project)
+		db.session.add(vpc)
+		db.session.commit()
+		
+		
 		return redirect(url_for('project.project_home'))
 	
 	return render_template('project/project_add.html',title='Project Add',form=form,accesskey_list=accesskey_list,accesskey_list_len=accesskey_list_len)
@@ -70,3 +80,11 @@ def ec2_build():
 	instance_type = instance_types()
 	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
 	return render_template('project/ec2_build.html',title="EC2 Build",instance_type=instance_type,project=project)
+
+#Firewall Rule Create
+@blue.route('/project/firewall')
+@fresh_login_required
+def firewall_rule_create():
+	form = Firewall_SG_Form()
+	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
+	return render_template('project/firewall_create.html',title="Firewall Rules",project=project,form=form)

@@ -80,6 +80,7 @@ class SecurityGroup(db.Model):
 	__bind_key__ = 'sg'
 	id = db.Column(db.Integer,primary_key=True)
 	sgname = db.Column(db.String(50))
+	sgid = db.Column(db.String(10))
 	sgdescription= db.Column(db.String(200))
 	vpcid = db.Column(db.String(50))
 	inboubd = db.Column(db.String(1000))

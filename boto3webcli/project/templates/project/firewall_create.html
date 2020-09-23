@@ -9,7 +9,7 @@
   	</ol>
 </nav>
 
-<div class="container">
+
 	<p class="text-left">A Firewall security group acts as a virtual firewall for your instance to control inbound and outbound traffic.
 	</p>
 	<div class="row">
@@ -78,11 +78,11 @@
                             <select id="firewalltype" onchange="myFirewalltype()">
                                 <option value="Custom TCP Rule">Custom TCP Rule</option>
                                 <option value="Custom UDP Rule">Custom UDP Rule</option>
-                                <option value="Custom ICMP IPv4 Rule">Custom ICMP IPv4 Rule</option>
+                                <!--<option value="Custom ICMP IPv4 Rule">Custom ICMP IPv4 Rule</option>-->
                                 <option value="Custom Protocols">Custom Protocols</option>
                                 <option value="All TCP">All TCP</option>
                                 <option value="All UDP">All UDP</option>
-                                <option value="All ICPM IPv4">All ICPM IPv4</option>
+                                <!--<option value="All ICPM IPv4">All ICPM IPv4</option>-->
                                 <option value="All Traffics">All Traffics</option>
                                 <option value="SSH">SSH</option>
                                 <option value="SMTP">SMTP</option>
@@ -90,6 +90,18 @@
                                 <option value="DNS (TCP)">DNS (TCP)</option>
                                 <option value="HTTP">HTTP</option>
                                 <option value="HTTPS">HTTPS</option>
+                                <option value="POP3">POP3</option>
+                                <option value="IMAP">IMAP</option>
+                                <option value="LDAP">LDAP</option>
+                                <option value="SMB">SMB</option>
+                                <option value="SMTPS">SMTPS</option>
+                                <option value="IMAPS">IMAPS</option>
+                                <option value="MY SQL">MY SQL</option>
+                                <option value="NFS">NFS</option>
+                                <option value="RDP">RDP</option>
+                                <option value="Redshift">Redshift</option>
+                                <option value="PostgreSQL">PostgreSQL</option>
+                                <option value="Oracle-RDS">Oracle-RDS</option>
                             </select>
                         </td>
                         <td><input type="text" placeholder="TCP or UDP" id="firewalltypeinput"></td>
@@ -137,7 +149,7 @@
                         });
                     }
                     else{
-                        console.log("Custom");
+                        document.getElementById("sgsourceinput").value = " "
                     }
                 }
             </script>
@@ -229,31 +241,166 @@
                             tab.rows[r].cells[1].firstChild.readOnly = true
                             tab.rows[r].cells[2].firstChild.value = 53
                             tab.rows[r].cells[2].firstChild.readOnly = true
-                            tab.rows[r].cells[2].firstChild.readOnly = true
                         }
                     }
                     else if ( x == "HTTP" ){
 
-                        for (var r = 1; r < 3 ; r += 1){
+                        for (var r = 1; r < 2 ; r += 1){
 
                             tab.rows[r].cells[1].firstChild.value = "TCP"
                             tab.rows[r].cells[1].firstChild.readOnly = true
                             tab.rows[r].cells[2].firstChild.value = 80
                             tab.rows[r].cells[2].firstChild.readOnly = true
-                            tab.rows[r].cells[3].childNodes[3].value = "0.0.0.0/0"
-
                         }
                     }
                     else if ( x == "HTTPS" ){
-                        for (var r = 1; r < 3 ; r += 1){
+
+                        for (var r = 1; r < 2 ; r += 1){
                             
                             tab.rows[r].cells[1].firstChild.value = "TCP"
                             tab.rows[r].cells[1].firstChild.readOnly = true
                             tab.rows[r].cells[2].firstChild.value = 443
                             tab.rows[r].cells[2].firstChild.readOnly = true
-                            tab.rows[r].cells[3].childNodes[3].value = "0.0.0.0/0"
+                        }
+                    }
+                    else if ( x == "POP3" ){
+
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 110
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            
+                        }
+
+                    }
+                    else if ( x == "IMAP" ){
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 143
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            
 
                         }
+
+                    }
+                    else if ( x == "LDAP" ){
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 389
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                        }
+
+                    }
+                    else if ( x == "SMB"){
+
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 445
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+
+                        }
+
+                    }
+                    else if ( x == "SMTPS" ){
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 465
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+
+                        }
+
+                    }
+                    else if ( x == "IMAPS" ){
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 993
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+
+                        }
+
+                    }
+                    else if ( x == "MY SQL"){
+
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 1433
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            
+                        }
+
+                    }
+                    else if ( x == "NFS" ){
+
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 2049
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                        }
+
+                    }
+                    else if ( x == "RDP" ){
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 3389
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            
+
+                        }
+
+                    }
+                    else if ( x == "Redshift" ){
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 5439
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            
+                        }
+
+                    }
+                    else if ( x == "PostgreSQL" ){
+
+                         for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 5432
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            
+
+                        }
+
+                    } 
+                    else if ( x == "Oracle-RDS" ){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 1512
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            
+                        }
+
                     }
                     else{
 
@@ -263,5 +410,5 @@
             </script>
         </div>
 	</div>
-</div>
+
 {% endblock content %}

@@ -53,14 +53,214 @@
 				  		</div>
                         <div class="form-group">
                             <label class="small mb-1" for="inputKeyName">Inbound Rules</label>
-                            {{form.inbound_rules(class="form-control")}}
+                            <!--{{form.inbound_rules(class="form-control")}}-->
+
                         </div>
 				  	</form>
 				  </div>
 			</div>
 		</div>
         <div class="col-xxl-4 col-xl-12 mb-4">
+            <table class="table table-sm" id="firewall-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Protocol</th>
+                        <th scope="col">Port Range</th>
+                        <th scope="col">Source</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mt-2">
+                            <select id="firewalltype" onchange="myFirewalltype()">
+                                <option value="Custom TCP Rule">Custom TCP Rule</option>
+                                <option value="Custom UDP Rule">Custom UDP Rule</option>
+                                <option value="Custom ICMP IPv4 Rule">Custom ICMP IPv4 Rule</option>
+                                <option value="Custom Protocols">Custom Protocols</option>
+                                <option value="All TCP">All TCP</option>
+                                <option value="All UDP">All UDP</option>
+                                <option value="All ICPM IPv4">All ICPM IPv4</option>
+                                <option value="All Traffics">All Traffics</option>
+                                <option value="SSH">SSH</option>
+                                <option value="SMTP">SMTP</option>
+                                <option value="DNS (UDP)">DNS (UDP)</option>
+                                <option value="DNS (TCP)">DNS (TCP)</option>
+                                <option value="HTTP">HTTP</option>
+                                <option value="HTTPS">HTTPS</option>
+                            </select>
+                        </td>
+                        <td><input type="text" placeholder="TCP or UDP" id="firewalltypeinput"></td>
+                        <td><input  type="text" placeholder="Port range"></td>
+                        <td>
+                            <select id="sgsource" onchange="mysgsource()">
+                                <option value="Custom">Custom</option>
+                                <option value="Anywhere">Anywhere</option>
+                                <option value="My IP">My IP</option>
+                            </select>
+                            <input type="text" id="sgsourceinput" placeholder="CIDR,IP,Security Group">
+                        </td>
+                        <td><input  type="text" placeholder="e.g SSH for Admin"></td>
+                        <td><button type="button" class="btn"><i class="fas fa-plus-circle"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <script type="text/javascript">
+                function mysgsource()
+                {
+                    var x = document.getElementById("sgsource").value;
 
+                    if ( x == "Anywhere" ){
+                        document.getElementById("sgsourceinput").value = "0.0.0.0/0"
+                        document.getElementById("sgsourceinput").readOnly = true
+                    }
+                    else if ( x == "My IP"){
+
+                        req = $.ajax({
+                        url : '/project/getmyip',
+                        type : "POST" });
+
+                        req.done(function(data){
+
+                            if (data.result == "fail" )
+                            {
+                                document.getElementById("sgsourceinput").value = "Error"
+
+                            }
+                            else {
+
+                                document.getElementById("sgsourceinput").value = data.result
+                                document.getElementById("sgsourceinput").readOnly = true
+                            }
+                        });
+                    }
+                    else{
+                        console.log("Custom");
+                    }
+                }
+            </script>
+            <script type="text/javascript">
+                function myFirewalltype()
+                {
+                    var x = document.getElementById("firewalltype").value;
+                    var tab = document.getElementById("firewall-table");
+                    if ( x == "Custom TCP Rule")
+                    {
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 0
+                        }
+                        
+                    }
+                    else if ( x == "Custom UDP Rule" ){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "UDP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 0
+                        }
+                        
+                    }
+                    else if ( x == "Custom Protocols"){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = ""
+                            tab.rows[r].cells[2].firstChild.value = "all"
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                        }
+                    }
+                    else if ( x == "All TCP"){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = "0 - 65535"
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                        }
+                    }
+                    else if ( x == "All UDP"){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "UDP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = "0 - 65535"
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                        }
+                    }
+                    else if ( x == "All Traffics"){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "All"
+                            tab.rows[r].cells[2].firstChild.value = "0 - 65535"
+                        }
+                    }
+                    else if ( x == "SSH"){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 22
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                        }
+                    }
+                    else if ( x == "SMTP" ){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 25
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                        }
+                    }
+                    else if ( x == "DNS (UDP)"){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "UDP"
+                            tab.rows[r].cells[2].firstChild.value = 53
+                        }
+                    }
+                    else if ( x == "DNS (TCP)" ){
+
+                        for (var r = 1; r < 2 ; r += 1){
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 53
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                        }
+                    }
+                    else if ( x == "HTTP" ){
+
+                        for (var r = 1; r < 3 ; r += 1){
+
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 80
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            tab.rows[r].cells[3].childNodes[3].value = "0.0.0.0/0"
+
+                        }
+                    }
+                    else if ( x == "HTTPS" ){
+                        for (var r = 1; r < 3 ; r += 1){
+                            
+                            tab.rows[r].cells[1].firstChild.value = "TCP"
+                            tab.rows[r].cells[1].firstChild.readOnly = true
+                            tab.rows[r].cells[2].firstChild.value = 443
+                            tab.rows[r].cells[2].firstChild.readOnly = true
+                            tab.rows[r].cells[3].childNodes[3].value = "0.0.0.0/0"
+
+                        }
+                    }
+                    else{
+
+                        alert("no");
+                    }
+                }
+            </script>
         </div>
 	</div>
 </div>

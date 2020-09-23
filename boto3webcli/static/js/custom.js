@@ -1,3 +1,4 @@
+//Table
 $(document).ready(function(){
 	$('#tablepaginate').DataTable({
 		"pagingType": "full_numbers",
@@ -5,3 +6,4 @@ $(document).ready(function(){
 	});
 	$('.dataTables_length').addClass('bs-select');
 });
+

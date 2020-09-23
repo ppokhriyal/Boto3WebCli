@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,url_for, flash, redirect, request, abort, session
+from flask import Blueprint,render_template,url_for, flash, redirect, request, abort, session, jsonify
 from boto3webcli import app,db,bcrypt,login_manager,mail,safe_seralizer
 from flask_login import login_user, current_user, logout_user, login_required,fresh_login_required
 from boto3webcli.project.forms import NewProjectForm,Firewall_SG_Form
@@ -6,6 +6,7 @@ from boto3webcli.models import User,Project,AccessKey,SecurityGroup,Vpc
 import botocore
 import boto3
 import json
+import urllib3
 
 #Blueprint object
 blue = Blueprint('project',__name__,template_folder='templates')
@@ -80,6 +81,17 @@ def ec2_build():
 	instance_type = instance_types()
 	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
 	return render_template('project/ec2_build.html',title="EC2 Build",instance_type=instance_type,project=project)
+
+#Get My Ip
+@blue.route('/project/getmyip',methods=['GET','POST'])
+def myip():
+	https = urllib3.PoolManager()
+	r = https.request('GET',"https://api.ipify.org/?/format=jason")
+	if r.status != 200:
+		return jsonify({'result':'fail'})
+	else:
+		ip = r.data.decode('utf-8')
+		return jsonify({'result': ip})
 
 #Firewall Rule Create
 @blue.route('/project/firewall')

@@ -94,9 +94,42 @@ def myip():
 		return jsonify({'result': ip})
 
 #Firewall Rule Create
-@blue.route('/project/firewall')
+@blue.route('/project/firewall',methods=['GET','POST'])
 @fresh_login_required
 def firewall_rule_create():
 	form = Firewall_SG_Form()
 	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
+
+	if form.validate_on_submit():
+
+		#Check if any rule is added or not
+		rulebook_check = request.form.getlist('rulebooklist')
+		
+		if len(rulebook_check) == 0:
+			flash(f'Rules are not added.Please add rules to your SecurityGroup','danger')
+
+		#Create SG
+		accesskey = db.session.query(AccessKey).filter(AccessKey.user_id==current_user.id).first()
+		project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
+		client_ec2 = boto3.client('ec2',region_name=project.project_region,aws_access_key_id=accesskey.accesskeyid,aws_secret_access_key=accesskey.secretkeyid)
+
+		#breakdown rulebook list
+		rule = rulebook_check[0].split(',')
+
+		security_group_response = client_ec2.create_security_group(Description=rule[0],
+			GroupName=rule[1],
+			VpcId=form.vpc.data)
+
+		security_group_id = security_group_response['GroupId']
+
+		sg_policy = client_ec2.authorize_security_group_ingress(
+			GroupId=security_group_id,
+			Description=rulebook_check[3],
+			IpPermissions=[
+			{'IpProtocol': rulebook_check[0],
+			'FormPort': rulebook_check[1],
+			'ToPort': rulebook_check[1],
+			'IpRanges' : [{'CidrIp' : rulebook_check[2]}]}])
+		
+
 	return render_template('project/firewall_create.html',title="Firewall Rules",project=project,form=form)

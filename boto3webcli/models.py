@@ -59,7 +59,7 @@ class Vpc(db.Model):
 	project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
 
 	def __repr__(self):
-		return f"VpcId : {self.vpcid}-CidrBlock : {self.cidrblock}"
+		return f"{self.vpcid}"
 
 #AWS Access Key
 class AccessKey(db.Model):

@@ -3,7 +3,7 @@ from boto3webcli import app,db,bcrypt,login_manager,mail,safe_seralizer
 from flask_login import login_user, current_user, logout_user, login_required,fresh_login_required
 from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from boto3webcli.models import User,AccessKey,Project,Vpc
+from boto3webcli.models import User,AccessKey,Project,Vpc,SecurityGroup
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 import botocore
 import boto3
@@ -45,3 +45,10 @@ class Firewall_SG_Form(FlaskForm):
 	vpc = QuerySelectField('VPC',query_factory=query_vpc)
 	inbound_rules = TextAreaField('Inbound Rules')
 	submit = SubmitField('Create Firewall Security Group')
+
+	def validate_sgname(self,sgname):
+
+		sgname = SecurityGroup.query.filter_by(sgname=sgname.data).first()
+
+		if sgname:
+			raise ValidationError('SecurityGroup name already exists. Please choose a diffrent one.')

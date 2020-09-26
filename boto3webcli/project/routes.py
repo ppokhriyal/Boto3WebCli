@@ -60,9 +60,12 @@ def project_add():
 #Project Dashboard
 @blue.route('/project/dashboard')
 def project_dashboard():
-	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
 
-	return render_template('project/project_dashboard.html',title='Project Dashboard',project=project)
+	page = request.args.get('page',1,type=int)
+	project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
+	sglen = len(SecurityGroup.query.filter_by(user_id=current_user.id).all())
+	sg = SecurityGroup.query.filter_by(user_id=current_user.id).paginate(page=page,per_page=8)
+	return render_template('project/project_dashboard.html',title='Project Dashboard',project=project,sg=sg,sglen=sglen)
 
 #Function for Instance Types
 def instance_types():
@@ -113,23 +116,33 @@ def firewall_rule_create():
 		project = db.session.query(Project).filter(Project.user_id==current_user.id).first()
 		client_ec2 = boto3.client('ec2',region_name=project.project_region,aws_access_key_id=accesskey.accesskeyid,aws_secret_access_key=accesskey.secretkeyid)
 
-		#breakdown rulebook list
-		rule = rulebook_check[0].split(',')
+		try:
+			security_group_response = client_ec2.create_security_group(Description=form.description.data,
+				GroupName=form.sgname.data,
+				VpcId=str(form.vpc.data).split(',')[0])
 
-		security_group_response = client_ec2.create_security_group(Description=rule[0],
-			GroupName=rule[1],
-			VpcId=form.vpc.data)
+			security_group_id = security_group_response['GroupId']
 
-		security_group_id = security_group_response['GroupId']
+			for ruleloop in rulebook_check:
+				rule = ruleloop.split(',')
 
-		sg_policy = client_ec2.authorize_security_group_ingress(
-			GroupId=security_group_id,
-			Description=rulebook_check[3],
-			IpPermissions=[
-			{'IpProtocol': rulebook_check[0],
-			'FormPort': rulebook_check[1],
-			'ToPort': rulebook_check[1],
-			'IpRanges' : [{'CidrIp' : rulebook_check[2]}]}])
-		
+				sg_policy = client_ec2.authorize_security_group_ingress(
+					GroupId=security_group_id,
+					IpPermissions=[
+					{'IpProtocol': rule[0],
+					'FromPort': int(rule[1]),
+					'ToPort': int(rule[1]),
+					'IpRanges' : [{'CidrIp' : rule[2]}]}])
+
+			#Update SG database
+			sg = SecurityGroup(sgname=form.sgname.data,sgid=security_group_id,sgdescription=form.description.data,vpcid=str(form.vpc.data).split(',')[0],project=project,user=current_user)
+			db.session.add(sg)
+			db.session.commit()
+
+			return redirect(url_for('project.project_dashboard'))
+
+		except botocore.exceptions.ClientError :
+			flash(f'Error while adding the SecurityGroup','danger')
+			return redirect(url_for('project.firewall_rule_create'))
 
 	return render_template('project/firewall_create.html',title="Firewall Rules",project=project,form=form)

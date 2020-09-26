@@ -29,6 +29,31 @@
                     Firewall Security Groups
                 </div>
                 <div class="card-body">
+                    {% if sglen == 0 %}
+                        <p class="text-info">Start adding Security Group</p>
+                    {% else %}
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th scope="col">SecurityGroup Name</th>
+                                    <th scope="col">SecurityGroup Id</th>
+                                    <th scope="col">Action</th>
+                                </tr>    
+                            </thead> 
+                            <tbody>
+                                {% for i in sg.items %}
+                                    <tr>
+                                        <td>{{i.sgname}}</td>
+                                        <td>{{i.sgid}}</td>
+                                        <td><a href="#">
+                                            <i class="fas text-danger fa-trash-alt m-2 lift"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>   
+                        </table>
+                    {% endif %}    
                 </div>
                 <div class="card-footer">
                 	<a class="btn btn-sm btn-primary rounded-0" href="{{url_for('project.firewall_rule_create')}}" role="button"><i class="fas fa-shield-alt mr-2"></i> Create Firewall Rules</a>

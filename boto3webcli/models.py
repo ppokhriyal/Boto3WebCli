@@ -42,6 +42,7 @@ class Project(db.Model):
 	date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
 	accesskey_db = db.relationship('AccessKey',backref='project',uselist=False)
 	vpcsdb = db.relationship('Vpc',backref='project',lazy=True,cascade='all,delete-orphan')
+	sgdb = db.relationship('SecurityGroup',backref='project',lazy=True,cascade='all,delete-orphan')
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def __repr__(self):
@@ -59,7 +60,7 @@ class Vpc(db.Model):
 	project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
 
 	def __repr__(self):
-		return f"{self.vpcid}"
+		return f"{self.vpcid},{self.cidrblock}"
 
 #AWS Access Key
 class AccessKey(db.Model):
@@ -85,3 +86,4 @@ class SecurityGroup(db.Model):
 	vpcid = db.Column(db.String(50))
 	inboubd = db.Column(db.String(1000))
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
